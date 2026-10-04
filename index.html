@@ -1,0 +1,323 @@
+<!-- Proteccion -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Protección de Código</title>
+  <style>
+    /* Evita selección de texto */
+    body {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+  </style>
+  <script>
+    // Bloquea clic derecho
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+      alert("Copia deshabilitada 🚫");
+    });
+
+    // Bloquea teclas comunes de copiar (Ctrl+U, Ctrl+C, Ctrl+Shift+I)
+    document.addEventListener('keydown', function(e) {
+      if ((e.ctrlKey && e.key === 'u') || 
+          (e.ctrlKey && e.key === 'c') || 
+          (e.ctrlKey && e.shiftKey && e.key === 'I')) {
+        e.preventDefault();
+        alert("Acción bloqueada 🚫");
+      }
+    });
+  </script>
+</head>
+<body>
+  <h2></h2>
+  <p></p>
+</body>
+</html>
+<!-- Proteccion -->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flutter Clock - Erick Córdoba Esquivel</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+body {
+  background: #020c1c;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.container {
+  background: #020c1c;
+  width: 100%;
+  max-width: 400px;
+  padding: 40px 20px;
+  text-align: center;
+}
+.title {
+  color: white;
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  letter-spacing: -.5px;
+}
+.digital {
+  color: #1e90ff;
+  font-size: 72px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  line-height: 1;
+  text-shadow: 0 0 20px rgba(30, 144, 255, .4);
+  font-variant-numeric: tabular-nums;
+}
+.date {
+  color: #d0d5dd;
+  font-size: 20px;
+  margin-top: 8px;
+  margin-bottom: 35px;
+  font-weight: 400;
+}
+
+/* RELOJ ANALÓGICO */
+.clock-wrap {
+  width: 300px;
+  height: 300px;
+  margin: 0 auto;
+  position: relative;
+}
+.clock {
+  width: 100%;
+  height: 100%;
+  border: 4px solid #0d8bf2;
+  border-radius: 50%;
+  position: relative;
+  background: rgba(2, 12, 28, .8);
+  box-shadow: 0 0 30px rgba(13, 139, 242, .2), inset 0 0 30px rgba(13, 139, 242, .05);
+}
+.center-dot {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: #0d8bf2;
+  border: 3px solid #020c1c;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  box-shadow: 0 0 10px #0d8bf2;
+}
+.hand {
+  position: absolute;
+  bottom: 50%;
+  left: 50%;
+  transform-origin: 50% 100%;
+  border-radius: 10px;
+  z-index: 5;
+}
+.hour {
+  width: 6px;
+  height: 70px;
+  background: white;
+  margin-left: -3px;
+}
+.minute {
+  width: 5px;
+  height: 95px;
+  background: white;
+  margin-left: -2.5px;
+}
+.second {
+  width: 2px;
+  height: 110px;
+  background: #0d8bf2;
+  margin-left: -1px;
+  z-index: 6;
+}
+
+.number {
+  position: absolute;
+  color: #6ec1e4;
+  font-size: 26px;
+  font-weight: 600;
+}
+.n12 {
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.n3 {
+  top: 50%;
+  right: 18px;
+  transform: translateY(-50%);
+}
+.n6 {
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.n9 {
+  top: 50%;
+  left: 18px;
+  transform: translateY(-50%);
+}
+
+.tick {
+  position: absolute;
+  width: 3px;
+  height: 14px;
+  background: #0d8bf2;
+  border-radius: 10px;
+  left: 50%;
+  top: 8px;
+  transform-origin: 50% 142px;
+  opacity: .8;
+}
+
+/* BOTÓN */
+.badge {
+  margin: 60px auto 0;
+  background: rgba(10, 25, 55, .8);
+  border: 1.5px solid rgba(13, 139, 242, .3);
+  border-radius: 50px;
+  padding: 12px 22px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: #cbd5e1;
+  font-size: 15px;
+}
+.badge svg {
+  width: 32px;
+  height: 32px;
+}
+.heart {
+  color: #c27aff;
+  font-size: 18px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1 class="title">Flutter Clock</h1>
+  <div class="digital" id="digital">09:41:26</div>
+  <div class="date" id="date">Apr 26, 2025</div>
+
+  <div class="clock-wrap">
+    <div class="clock" id="clock">
+      <div class="number n12">12</div>
+      <div class="number n3">3</div>
+      <div class="number n6">6</div>
+      <div class="number n9">9</div>
+      <!-- ticks -->
+      <div class="hand hour" id="hHand"></div>
+      <div class="hand minute" id="mHand"></div>
+      <div class="hand second" id="sHand"></div>
+      <div class="center-dot"></div>
+    </div>
+  </div>
+
+  <div class="badge">
+     <span class="heart">💜</span>
+  </div>
+</div>
+<!-- Boton para ir a la calculadora -->
+<p></p><button class="boton-calculadora" onclick="location.href='calculadora.html'">
+    🧮 Abrir Calculadora
+</button>
+
+<style>
+.boton-calculadora {
+    background: linear-gradient(135deg, #007bff, #00c6ff);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 6px 15px rgba(0, 123, 255, 0.35);
+    transition: all 0.3s ease;
+}
+
+.boton-calculadora:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 10px 22px rgba(0, 123, 255, 0.45);
+}
+
+.boton-calculadora:active {
+    transform: scale(0.97);
+}
+</style></p>
+<!--  Boton para ir a la calculadora -->
+
+<script>
+// Crear ticks
+const clock = document.getElementById('clock');
+for (let i = 0; i < 12; i++) {
+  if ([0, 3, 6, 9].includes(i)) continue;
+  let t = document.createElement('div');
+  t.className = 'tick';
+  // La rotación correcta es calculada aquí, 30 grados por hora (360 / 12)
+  t.style.transform = `translateX(-50%) rotate(${i * 30}deg)`;
+  clock.appendChild(t);
+}
+
+function update() {
+  const now = new Date();
+
+  // Hora digital 12 horas
+  let horas = now.getHours();
+  let ampm = horas >= 12 ? "PM" : "AM";
+
+  horas = horas % 12;
+  horas = horas ? horas : 12; // 0 = 12
+
+  let minutos = now.getMinutes().toString().padStart(2, '0');
+  let segundos = now.getSeconds().toString().padStart(2, '0');
+
+  document.getElementById('digital').textContent = `${horas}:${minutos}:${segundos} ${ampm}`;
+
+  // Fecha en español
+  const opts = {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  };
+
+  // Asegurarse de que el locale sea correcto para la fecha en español.
+  // 'es-CR' es un ejemplo, puedes usar 'es-ES', 'es-MX', etc.
+  document.getElementById('date').textContent =
+    now.toLocaleDateString('es-CR', opts);
+
+  // Analógico
+  const sec = now.getSeconds() + now.getMilliseconds() / 1000;
+  const min = now.getMinutes() + sec / 60;
+  const hr = (now.getHours() % 12) + min / 60; // Usar % 12 para el formato de 12 horas
+
+  // Las rotaciones son en grados. 360 grados / 60 segundos = 6 grados por segundo.
+  // 360 grados / 60 minutos = 6 grados por minuto.
+  // 360 grados / 12 horas = 30 grados por hora.
+  document.getElementById('sHand').style.transform = `translateX(-50%) rotate(${sec * 6}deg)`;
+  document.getElementById('mHand').style.transform = `translateX(-50%) rotate(${min * 6}deg)`;
+  document.getElementById('hHand').style.transform = `translateX(-50%) rotate(${hr * 30}deg)`;
+}
+setInterval(update, 50);
+update(); // Llamada inicial para que el reloj se muestre inmediatamente
+</script>
+
+</body>
+</html>
